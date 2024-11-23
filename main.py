@@ -44,10 +44,10 @@ def resolve_playlist_url(user_input):
 
 
 def download_video_or_playlist(resolution="1080", file_format="mp4", input_url=None, output_folder="downloads",
-                               is_video=False):
+                               is_video=False, include_description=False, include_thumbnail=False, include_statistics=False):
     """
     Downloads an individual video or a playlist in the specified resolution and format.
-    Saves videos to the specified output folder.
+    Saves videos to the specified output folder, and optionally downloads descriptions, thumbnails, and statistics.
     """
     if not input_url:
         logging.error("No valid input URL provided.")
@@ -85,6 +85,14 @@ def download_video_or_playlist(resolution="1080", file_format="mp4", input_url=N
         "-o", os.path.join(output_folder, template),
         input_url
     ]
+
+    # Add flags to download descriptions, thumbnails, and statistics
+    if include_description:
+        command.append("--write-description")
+    if include_thumbnail:
+        command.append("--write-thumbnail")
+    if include_statistics:
+        command.append("--write-info-json")
 
     try:
         logging.info(f"Starting download: Input URL={input_url}, Resolution={resolution}, Format={file_format}")
@@ -125,6 +133,9 @@ def main():
     resolution = input("Enter the desired resolution (default is 1080): ").strip() or "1080"
     file_format = input("Enter the output file format (default is mp4): ").strip() or "mp4"
     output_folder = input("Enter the output folder (default is 'downloads'): ").strip() or "downloads"
+    include_description = input("Download video descriptions? (y/n, default is no): ").strip().lower() in ["y", "yes"]
+    include_thumbnail = input("Download video thumbnails? (y/n, default is no): ").strip().lower() in ["y", "yes"]
+    include_statistics = input("Download video statistics (likes, views, etc.)? (y/n, default is no): ").strip().lower() in ["y", "yes"]
 
     # Resolve playlist URL if it's not a video
     if not is_video_input:
@@ -132,7 +143,10 @@ def main():
 
     # Proceed with the download
     if user_input:
-        download_video_or_playlist(resolution, file_format, user_input, output_folder, is_video=is_video_input)
+        download_video_or_playlist(
+            resolution, file_format, user_input, output_folder, is_video=is_video_input,
+            include_description=include_description, include_thumbnail=include_thumbnail, include_statistics=include_statistics
+        )
     else:
         logging.error("Could not resolve the input URL.")
     logging.info("=== YouTube Archiver Finished ===")
