@@ -142,13 +142,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# TODO:
-#   - Write a README (with instructions)
-#   - Add option to select absolute download folder path
-#   - Add option to download video descriptions
-#   - Add option to download video thumbnails
-#   - Add option to download video statistics (views, likes, dislikes, comments)
-#   - Add option to download video captions
-#   - Add option to download video manual subtitles
-#   - Create a text file with the downloaded video information
