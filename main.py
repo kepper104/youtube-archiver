@@ -83,6 +83,8 @@ def download_video_or_playlist(resolution="1080", file_format="mp4", input_url=N
         f"bestvideo[height<={resolution}][vcodec^=avc1]+bestaudio[acodec^=mp4a]/best[height<={resolution}][vcodec^=avc1][acodec^=mp4a]",
         "--merge-output-format", file_format,
         "-o", os.path.join(output_folder, template),
+        "--cookies", "cookies.txt",
+        # "--cookies-from-browser", "firefox",
         input_url
     ]
 
